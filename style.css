@@ -1,0 +1,24 @@
+/* .letter-spacing {
+  letter-spacing: 2rem !important;
+} */
+.crossed {
+  text-decoration-line: line-through;
+}
+.position-relative {
+  position: relative;
+}
+.cart-counter {
+  position: absolute;
+  font-size: 10px;
+  padding: 0 0.4rem;
+  left: 0.6rem;
+  top: -0.3rem;
+  border-radius: 10px;
+}
+
+.v-dialog {
+  margin: 0 0 !important;
+  border-radius: 10px;
+  position: absolute;
+  top: 5.8rem;
+}

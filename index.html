@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- displays site properly based on user's device -->
+
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="./images/favicon-32x32.png"
+    />
+    <!-- Vuetifyt links -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/@mdi/font@6.x/css/materialdesignicons.min.css"
+      rel="stylesheet"
+    />
+    <!-- Css -->
+    <link rel="stylesheet" href="style.css" />
+    <title>Frontend Mentor | E-commerce product page</title>
+    <!-- Feel free to remove these styles or customise in your own stylesheet 👍 -->
+    <style>
+      .attribution {
+        font-size: 11px;
+        text-align: center;
+      }
+      .attribution a {
+        color: hsl(228, 45%, 44%);
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <v-app>
+        <v-app-bar app flat height="80">
+          <v-app-bar-nav-icon @click="navDrawer = !navDrawer">
+          </v-app-bar-nav-icon>
+          <h1>sneakers</h1>
+          <v-spacer></v-spacer>
+          <div class="d-flex position-relative">
+            <img
+              width="25px"
+              height="20px"
+              class="align-self-center"
+              src="images/icon-cart.svg"
+              @click="dialog=true"
+            />
+            <img width="25px" class="ml-4" src="images/image-avatar.png" />
+            <span class="cart-counter white--text orange darken-2">
+              {{cartCounter}}
+            </span>
+          </div>
+        </v-app-bar>
+        <v-navigation-drawer app temporary v-model="navDrawer">
+          <v-list class="ml-3">
+            <v-list-item-action class="ml-3 mb-5" @click="navDrawer = false">
+              <v-icon> mdi-close-thick </v-icon>
+            </v-list-item-action>
+            <v-list-item v-for="(title, i) in navDrawerTitles" :key="i">
+              <v-list-item-action class="font-weight-black title">
+                {{title}}
+              </v-list-item-action>
+            </v-list-item>
+          </v-list>
+        </v-navigation-drawer>
+        <!--  -->
+        <v-main>
+          <v-dialog v-model="dialog" height="200" width="95%">
+            <v-card>
+              <v-card-title class="font-weight-black subtitle-1">
+                Cart
+              </v-card-title>
+              <v-divider></v-divider>
+              <v-card-text v-if="cartCounter" class="mt-5 d-flex">
+                <img
+                  width="50px"
+                  src="images/image-product-1-thumbnail.jpg"
+                  alt=""
+                  class="rounded"
+                />
+                <div class="mx-3">
+                  <p class="grey--text text--darken-1 font-weight-medium mb-0">
+                    Autumn Limited Edition...
+                  </p>
+                  <p class="grey--text text--darken-1 font-weight-medium mb-0">
+                    $125.00 x 3
+                    <span class="font-weight-black black--text">$375.00</span>
+                  </p>
+                </div>
+                <v-spacer></v-spacer>
+                <v-icon
+                  class="grey--text text--lighten-1"
+                  @click="cartCounter = null"
+                  >mdi-trash-can</v-icon
+                >
+              </v-card-text>
+              <v-card-text v-else>
+                <p
+                  class="subtitle-1 font-weight-bold grey--text text--darken-2 my-15 py-5 text-center"
+                >
+                  Your cart is empty.
+                </p>
+              </v-card-text>
+              <v-card-actions v-if="cartCounter">
+                <v-btn
+                  class="orange darken-2 white--text py-6 mb-8 rounded"
+                  block
+                  >Checkout</v-btn
+                >
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+          <v-carousel height="300" hide-delimiters>
+            <v-carousel-item
+              v-for="(sneaker,i) in sneakers"
+              :key="i"
+              :src="sneaker.src"
+            ></v-carousel-item>
+          </v-carousel>
+          <!--  -->
+          <v-container class="mt-3 px-6">
+            <p class="subtitle-2 font-weight-black orange--text">
+              SNEAKER COMPANY
+            </p>
+            <p class="headline font-weight-black">
+              Fall Limited Edition Sneakers
+            </p>
+            <p class="grey--text text--darken-2 font-weight-medium">
+              These low-profile sneakers are your perfect casual wear companion.
+              Featuring a durable rubber outer sole, they’ll withstand
+              everything the weather can offer.
+            </p>
+            <div class="d-flex">
+              <p class="font-weight-black headline">$125.00</p>
+              <p
+                class="orange--text font-weight-black align-self-center grey lighten-3 px-2 py-1 ml-5 rounded"
+              >
+                50%
+              </p>
+              <v-spacer></v-spacer>
+              <p
+                class="grey--text subtitle-1 font-weight-black crossed align-self-center"
+              >
+                $250.00
+              </p>
+            </div>
+            <!--  -->
+            <div
+              class="grey lighten-4 rounded d-flex justify-space-between px-5 py-1 mt-3"
+            >
+              <button @click="counter > 0 ? counter-- : counter = 0">
+                <v-icon class="orange--text">mdi-minus-thick</v-icon>
+              </button>
+              <p class="font-weight-black mt-3">{{counter}}</p>
+              <button @click="counter++">
+                <v-icon class="orange--text">mdi-plus-thick</v-icon>
+              </button>
+            </div>
+            <!--  -->
+            <v-btn
+              class="orange darken-2 py-6 mt-4 white--text rounded"
+              block
+              @click="cartCounter = counter"
+            >
+              <v-icon class="white--text mr-3"> mdi-cart-outline </v-icon>
+              <span>Add to cart</span>
+            </v-btn>
+          </v-container>
+        </v-main>
+      </v-app>
+    </div>
+
+    Collections Men Women About Contact Sneaker Company Fall Limited Edition
+    Sneakers $125.00 50% $250.00 0 Add to cart
+
+    <div class="attribution">
+      Challenge by
+      <a href="https://www.frontendmentor.io?ref=challenge" target="_blank"
+        >Frontend Mentor</a
+      >. Coded by <a href="#">Your Name Here</a>.
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+    <script>
+      var app = new Vue({
+        el: "#app",
+        vuetify: new Vuetify(),
+        // computed() {
+        //   isMobileScreen: () => {
+        //     let screen = screen.size;
+        //     console.log("test");
+        //   },
+        // },
+        data: {
+          windowWidth: window.innerWidth,
+          navDrawer: false,
+          navDrawerTitles: ["Collections", "Men", "Women", "About", "Contact"],
+          sneakers: [
+            {
+              src: "images/image-product-1.jpg",
+            },
+            {
+              src: "images/image-product-2.jpg",
+            },
+            {
+              src: "images/image-product-3.jpg",
+            },
+            {
+              src: "images/image-product-4.jpg",
+            },
+          ],
+          counter: 0,
+          cartCounter: null,
+          dialog: true,
+        },
+        created() {
+          window.addEventListener("resize", this.onResize);
+        },
+        destroyed() {
+          window.removeEventListener("resize", this.onResize);
+        },
+        methods: {
+          onResize() {
+            this.windowWidth = window.innerWidth;
+          },
+        },
+      });
+    </script>
+  </body>
+</html>
