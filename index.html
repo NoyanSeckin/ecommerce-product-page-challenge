@@ -4,7 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- displays site properly based on user's device -->
-
+    <!-- Google fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
     <link
       rel="icon"
       type="image/png"
@@ -36,7 +40,8 @@
   </head>
   <body>
     <div id="app">
-      <v-app>
+      <!-- Mobile design -->
+      <v-app v-if="windowWidth < 600">
         <v-app-bar app flat height="80">
           <v-app-bar-nav-icon @click="navDrawer = !navDrawer">
           </v-app-bar-nav-icon>
@@ -117,6 +122,7 @@
           </v-dialog>
           <v-carousel height="300" hide-delimiters>
             <v-carousel-item
+              height="100%"
               v-for="(sneaker,i) in sneakers"
               :key="i"
               :src="sneaker.src"
@@ -170,6 +176,83 @@
               <v-icon class="white--text mr-3"> mdi-cart-outline </v-icon>
               <span>Add to cart</span>
             </v-btn>
+          </v-container>
+        </v-main>
+      </v-app>
+      <!-- Desktop Design -->
+      <v-app>
+        <v-app-bar color="white" class="higher-padding" app flat>
+          <div class="d-flex">
+            <h5 class="brand-title font-weight-bold mr-9 mt-2">sneakers</h5>
+            <div class="d-flex mt-5" v-for="title in navDrawerTitles">
+              <p class="mr-4 grey--text font-weight-bold">{{title}}</p>
+            </div>
+          </div>
+          <v-spacer></v-spacer>
+          <div>
+            <img class="mb-1" src="images/icon-cart.svg" alt="" />
+            <img
+              class="ml-9"
+              width="40px"
+              src="images/image-avatar.png"
+              alt=""
+            />
+          </div>
+        </v-app-bar>
+        <v-main>
+          <v-container class="high-padding">
+            <v-divider class="mt-6 mb-16"></v-divider>
+            <v-row>
+              <v-col cols="lg-6"></v-col>
+              <v-col cols="lg-6">
+                <p class="orange--text subtitle-2 font-weight-bold">
+                  SNEAKER COMPANY
+                </p>
+                <p class="black--text font-weight-bold display-1 pr-5 mb-8">
+                  Fall Limited Edition Sneakers
+                </p>
+                <p class="grey--text text--darken-2 font-weight-medium pr-7">
+                  These low-profile sneakers are your perfect casual wear
+                  companion. Featuring a durable rubber outer sole, they’ll
+                  withstand everything the weather can offer.
+                </p>
+                <div class="d-flex">
+                  <p class="title font-weight-black">$125.00</p>
+                  <p
+                    class="orange--text font-weight-black align-self-center grey lighten-3 px-2 py-1 ml-5 rounded subtitle-2"
+                  >
+                    50%
+                  </p>
+                </div>
+                <p
+                  class="grey--text subtitle-2 font-weight-bold crossed align-self-center"
+                >
+                  $250.00
+                </p>
+                <!--  -->
+                <div class="d-flex">
+                  <div
+                    class="grey lighten-4 rounded d-flex justify-space-between px-2 mr-4 rounded"
+                  >
+                    <button @click="counter > 0 ? counter-- : counter = 0">
+                      <v-icon class="orange--text">mdi-minus-thick</v-icon>
+                    </button>
+                    <p class="font-weight-black mx-10 mt-3">{{counter}}</p>
+                    <button @click="counter++">
+                      <v-icon class="orange--text">mdi-plus-thick</v-icon>
+                    </button>
+                  </div>
+                  <!--  -->
+                  <v-btn
+                    class="orange darken-2 py-6 px-12 white--text rounded"
+                    @click="cartCounter = counter"
+                  >
+                    <v-icon class="white--text mr-3"> mdi-cart-outline </v-icon>
+                    <span>Add to cart</span>
+                  </v-btn>
+                </div>
+              </v-col>
+            </v-row>
           </v-container>
         </v-main>
       </v-app>
