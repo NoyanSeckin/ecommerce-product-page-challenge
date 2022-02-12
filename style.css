@@ -16,11 +16,12 @@
   border-radius: 10px;
 }
 
-.v-dialog {
+.mobile-cart-dialog {
   margin: 0 0 !important;
   border-radius: 10px;
   position: absolute;
   top: 5.8rem;
+  width: 95%;
 }
 .high-padding {
   padding: 0 5rem;
@@ -32,4 +33,92 @@
   letter-spacing: 0px !important;
   font-size: 1.8rem;
   font-family: "Kumbh Sans", sans-serif;
+}
+
+.rounded-2 {
+  border-radius: 15px;
+}
+.thumbnail-container {
+  width: 19.5%;
+}
+
+.thumbnail-div {
+  width: 100%;
+}
+
+.thumbnail-img {
+  border-radius: 5px;
+  height: 70px;
+}
+
+.thumbnail-img:hover {
+  cursor: pointer;
+  filter: opacity(0.7);
+}
+.activeImgDiv {
+  border: rgba(255, 125, 26) solid 3px;
+  border-radius: 10px;
+}
+.activeImg {
+  filter: opacity(0.5);
+  height: 65px;
+}
+
+.brand-title-desktop {
+  letter-spacing: 0px !important;
+  font-size: 1.8rem;
+  font-family: "Kumbh Sans", sans-serif;
+}
+
+.desktop-nav-titles:hover {
+  border-bottom: 3px solid rgba(255, 125, 26);
+  cursor: pointer;
+}
+.desktop-cart-span {
+  position: absolute;
+  font-size: 10px;
+  padding: 0 0.4rem;
+  left: 0.5rem;
+  top: 0.5rem;
+  border-radius: 10px;
+}
+.desktop-cart-dialog {
+  width: 25%;
+  height: 205px;
+  overflow: hidden;
+  position: absolute;
+  right: 6.5rem;
+  top: 2.5rem;
+}
+
+.desktop-carousel-dialog {
+  box-shadow: none !important;
+  overflow: hidden;
+}
+
+/* .desktop-carousel-item {
+  border-radius: 15px !important;
+} */
+/* .desktop-carousel .v-window__prev {
+  position: absolute;
+  z-index: 222 !important;
+  left: -3rem;
+} */
+.desktop-carousel .v-window__next {
+}
+#carousel-close-icon:hover {
+  color: rgba(255, 125, 26);
+  cursor: pointer;
+}
+.cursor-pointer:hover {
+  cursor: pointer;
+}
+
+.orange-outline:hover {
+  border: solid 2px rgba(255, 125, 26);
+  border-radius: 50px;
+}
+
+.no-uppercase {
+  text-transform: unset !important;
 }

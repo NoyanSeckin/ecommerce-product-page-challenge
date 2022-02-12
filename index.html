@@ -53,7 +53,7 @@
               height="20px"
               class="align-self-center"
               src="images/icon-cart.svg"
-              @click="dialog=true"
+              @click="cartDialog=true"
             />
             <img width="25px" class="ml-4" src="images/image-avatar.png" />
             <span class="cart-counter white--text orange darken-2">
@@ -75,7 +75,12 @@
         </v-navigation-drawer>
         <!--  -->
         <v-main>
-          <v-dialog v-model="dialog" height="200" width="95%">
+          <v-dialog
+            v-model="cartDialog"
+            class="v-dialog"
+            height="200"
+            content-class="mobile-cart-dialog"
+          >
             <v-card>
               <v-card-title class="font-weight-black subtitle-1">
                 Cart
@@ -113,7 +118,7 @@
               </v-card-text>
               <v-card-actions v-if="cartCounter">
                 <v-btn
-                  class="orange darken-2 white--text py-6 mb-8 rounded"
+                  class="orange darken-2 white--text py-6 mb-8 rounded no-uppercase"
                   block
                   >Checkout</v-btn
                 >
@@ -169,9 +174,9 @@
             </div>
             <!--  -->
             <v-btn
-              class="orange darken-2 py-6 mt-4 white--text rounded"
+              class="orange darken-2 py-6 mt-4 white--text rounded no-uppercase"
               block
-              @click="cartCounter = counter"
+              @click="cartCounter += counter"
             >
               <v-icon class="white--text mr-3"> mdi-cart-outline </v-icon>
               <span>Add to cart</span>
@@ -180,19 +185,31 @@
         </v-main>
       </v-app>
       <!-- Desktop Design -->
-      <v-app>
+      <v-app v-else>
         <v-app-bar color="white" class="higher-padding" app flat>
           <div class="d-flex">
-            <h5 class="brand-title font-weight-bold mr-9 mt-2">sneakers</h5>
-            <div class="d-flex mt-5" v-for="title in navDrawerTitles">
-              <p class="mr-4 grey--text font-weight-bold">{{title}}</p>
+            <h5 class="brand-title font-weight-bold mr-9 mt-8 pb-9">
+              sneakers
+            </h5>
+            <div class="d-flex mt-12" v-for="title in navDrawerTitles">
+              <p class="mr-4 grey--text font-weight-bold desktop-nav-titles">
+                {{title}}
+              </p>
             </div>
           </div>
           <v-spacer></v-spacer>
-          <div>
-            <img class="mb-1" src="images/icon-cart.svg" alt="" />
+          <div class="position-relative">
+            <span class="desktop-cart-span white--text orange darken-2">
+              {{cartCounter}}
+            </span>
             <img
-              class="ml-9"
+              @click="cartDialog = true"
+              class="mb-1 cursor-pointer"
+              src="images/icon-cart.svg"
+              alt=""
+            />
+            <img
+              class="ml-7 cursor-pointer orange-outline"
               width="40px"
               src="images/image-avatar.png"
               alt=""
@@ -200,11 +217,175 @@
           </div>
         </v-app-bar>
         <v-main>
+          <!-- Desktop cart dialog -->
+          <v-dialog
+            v-model="cartDialog"
+            content-class="desktop-cart-dialog"
+            overlay-opacity="0"
+          >
+            <v-card height="100%">
+              <v-card-title class="font-weight-black subtitle-2">
+                Cart
+              </v-card-title>
+              <v-divider></v-divider>
+              <v-card-text v-if="cartCounter" class="mt-5 pb-2 d-flex">
+                <img
+                  width="50px"
+                  src="images/image-product-1-thumbnail.jpg"
+                  alt=""
+                  class="rounded"
+                />
+                <div class="mx-3">
+                  <p class="grey--text text--darken-1 font-weight-medium mb-0">
+                    Autumn Limited Edition...
+                  </p>
+                  <p class="grey--text text--darken-1 font-weight-medium mb-0">
+                    $125.00 x 3
+                    <span class="font-weight-black black--text">$375.00</span>
+                  </p>
+                </div>
+                <v-spacer></v-spacer>
+                <v-icon
+                  class="grey--text text--lighten-1"
+                  @click="cartCounter = null"
+                  >mdi-trash-can</v-icon
+                >
+              </v-card-text>
+              <v-card-text v-else>
+                <p
+                  class="subtitle-1 font-weight-bold grey--text text--darken-2 pt-9 mb-15 text-center"
+                >
+                  Your cart is empty.
+                </p>
+              </v-card-text>
+              <v-card-actions class="mx-2" v-if="cartCounter">
+                <v-btn
+                  class="orange darken-2 white--text rounded py-6 no-uppercase"
+                  block
+                  >Checkout</v-btn
+                >
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+          <!-- Desktop product carousel-->
+          <v-dialog
+            width="35%"
+            v-model="desktopCarouselDialog"
+            overlay-opacity="0.7"
+            content-class="desktop-carousel-dialog"
+          >
+            <!-- <h1>{{currentCar}}</h1> -->
+            <p class="text-end pb-0">
+              <v-icon
+                @click="desktopCarouselDialog = false"
+                id="carousel-close-icon"
+                class=""
+                >mdi-close-thick</v-icon
+              >
+            </p>
+            <v-carousel height="450" hide-delimiters v-model="currentCarousel">
+              <v-carousel-item
+                v-for="(sneaker,i) in sneakers"
+                :key="i"
+                :src="sneaker.src"
+              ></v-carousel-item>
+            </v-carousel>
+            <div class="thumbnail-container d-flex mt-5 ml-7">
+              <div class="thumbnail-div mr-4" :class="{activeImgDiv: isImg1}">
+                <v-img
+                  @click="changeActiveCarousel('isImg1', 0)"
+                  src="images/image-product-1-thumbnail.jpg"
+                  class="thumbnail-img"
+                  :class="{activeImg: isImg1}"
+                ></v-img>
+              </div>
+              <div class="thumbnail-div mr-4" :class="{activeImgDiv: isImg2}">
+                <v-img
+                  @click="changeActiveCarousel('isImg2', 1)"
+                  src="images/image-product-2-thumbnail.jpg"
+                  class="thumbnail-img"
+                  :class="{activeImg: isImg2}"
+                ></v-img>
+              </div>
+              <div class="thumbnail-div mr-4" :class="{activeImgDiv: isImg3}">
+                <v-img
+                  @click="changeActiveCarousel('isImg3', 2)"
+                  src="images/image-product-3-thumbnail.jpg"
+                  class="thumbnail-img"
+                  :class="{activeImg: isImg3}"
+                ></v-img>
+              </div>
+              <div class="thumbnail-div mr-4" :class="{activeImgDiv: isImg4}">
+                <v-img
+                  @click="changeActiveCarousel('isImg4', 3)"
+                  src="images/image-product-4-thumbnail.jpg"
+                  class="thumbnail-img"
+                  :class="{activeImg: isImg4}"
+                ></v-img>
+              </div>
+            </div>
+          </v-dialog>
+          <!--  -->
           <v-container class="high-padding">
-            <v-divider class="mt-6 mb-16"></v-divider>
-            <v-row>
-              <v-col cols="lg-6"></v-col>
-              <v-col cols="lg-6">
+            <v-divider class="mt-4 mb-13"></v-divider>
+            <v-row class="">
+              <v-spacer></v-spacer>
+              <v-col cols="lg-5" class="mr-15">
+                <v-img
+                  :src="activeImgUrl"
+                  class="rounded-2"
+                  width="90%"
+                  @click="desktopCarouselDialog = true"
+                ></v-img>
+                <div class="thumbnail-container d-flex mt-5">
+                  <div
+                    class="thumbnail-div mr-4"
+                    :class="{activeImgDiv: isImg1}"
+                  >
+                    <v-img
+                      @click="changeActiveImg('isImg1', 'images/image-product-1.jpg')"
+                      src="images/image-product-1-thumbnail.jpg"
+                      class="thumbnail-img"
+                      :class="{activeImg: isImg1}"
+                    ></v-img>
+                  </div>
+                  <div
+                    class="thumbnail-div mr-4"
+                    :class="{activeImgDiv: isImg2}"
+                  >
+                    <v-img
+                      @click="changeActiveImg('isImg2', 'images/image-product-2.jpg')"
+                      src="images/image-product-2-thumbnail.jpg"
+                      class="thumbnail-img"
+                      :class="{activeImg: isImg2}"
+                    ></v-img>
+                  </div>
+                  <div
+                    class="thumbnail-div mr-4"
+                    :class="{activeImgDiv: isImg3}"
+                  >
+                    <v-img
+                      @click="changeActiveImg('isImg3', 'images/image-product-3.jpg')"
+                      src="images/image-product-3-thumbnail.jpg"
+                      class="thumbnail-img"
+                      :class="{activeImg: isImg3}"
+                    ></v-img>
+                  </div>
+                  <div
+                    class="thumbnail-div mr-4"
+                    :class="{activeImgDiv: isImg4}"
+                  >
+                    <v-img
+                      @click="changeActiveImg('isImg4', 'images/image-product-4.jpg')"
+                      src="images/image-product-4-thumbnail.jpg"
+                      class="thumbnail-img"
+                      :class="{activeImg: isImg4}"
+                    ></v-img>
+                  </div>
+                </div>
+              </v-col>
+              <!--  -->
+              <v-col cols="lg-5" class="align-self-center mt-5">
                 <p class="orange--text subtitle-2 font-weight-bold">
                   SNEAKER COMPANY
                 </p>
@@ -244,28 +425,26 @@
                   </div>
                   <!--  -->
                   <v-btn
-                    class="orange darken-2 py-6 px-12 white--text rounded"
-                    @click="cartCounter = counter"
+                    class="orange darken-2 py-6 px-12 white--text rounded no-uppercase"
+                    @click="cartCounter += counter"
                   >
                     <v-icon class="white--text mr-3"> mdi-cart-outline </v-icon>
                     <span>Add to cart</span>
                   </v-btn>
                 </div>
               </v-col>
+              <v-spacer></v-spacer>
             </v-row>
           </v-container>
         </v-main>
       </v-app>
     </div>
 
-    Collections Men Women About Contact Sneaker Company Fall Limited Edition
-    Sneakers $125.00 50% $250.00 0 Add to cart
-
     <div class="attribution">
       Challenge by
       <a href="https://www.frontendmentor.io?ref=challenge" target="_blank"
         >Frontend Mentor</a
-      >. Coded by <a href="#">Your Name Here</a>.
+      >. Coded by <a href="#">Egemen Noyan Seçkin</a>.
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
@@ -299,8 +478,15 @@
             },
           ],
           counter: 0,
-          cartCounter: null,
-          dialog: true,
+          cartCounter: 3,
+          cartDialog: false,
+          desktopCarouselDialog: false,
+          activeImgUrl: "images/image-product-1.jpg",
+          isImg1: false,
+          isImg2: false,
+          isImg3: false,
+          isImg4: false,
+          currentCarousel: null,
         },
         created() {
           window.addEventListener("resize", this.onResize);
@@ -311,6 +497,21 @@
         methods: {
           onResize() {
             this.windowWidth = window.innerWidth;
+          },
+          changeActiveImg(activeImg, imageUrl) {
+            this.isImg1 = false;
+            this.isImg2 = false;
+            this.isImg3 = false;
+            this.isImg4 = false;
+            this[activeImg] = true;
+            if (imageUrl) {
+              this.activeImgUrl = imageUrl;
+            }
+          },
+          changeActiveCarousel(activeImg, carouselValue) {
+            this.changeActiveImg(activeImg);
+            this.currentCarousel = carouselValue;
+            console.log(this.currentCarousel);
           },
         },
       });
